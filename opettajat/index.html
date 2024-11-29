@@ -3,16 +3,19 @@
 <head>
   <meta charset="utf-8">
   <title>Oispa SamKessa!</title>
-  <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" style="position:fixed;bottom:100px;right:100px;z-index:1000;padding:30px;background-color:#ff2c2c;color:white;border:none;border-radius:5px;cursor:pointer;">ANNA PALAUTETTA PELISTÄ</button>
 
+  <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" 
+          style="position:fixed;bottom:100px;right:100px;z-index:1000;padding:30px;background-color:#ff2c2c;color:white;border:none;border-radius:5px;cursor:pointer;">
+    ANNA PALAUTETTA PELISTÄ
+  </button>
 
   <link href="main.css" rel="stylesheet" type="text/css">
   <link rel="icon" type="image/x-icon" href="favicon.png">
   <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="title" content="Oispa SamKessa!">
-<meta name="description" content="Tulehan SamKeen">
-<meta name="keywords" content="oispa, samke, peli, samkessa">
+  <meta name="title" content="Oispa SamKessa!">
+  <meta name="description" content="Tulehan SamKeen">
+  <meta name="keywords" content="oispa, samke, peli, samkessa">
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -20,11 +23,40 @@
   <meta property="og:description" content="Tulehan SamKeen" />
   <meta property="og:type" content="website" />
   <meta property="og:image:type" content="image/png" />
+  <style>
+    /* Keskitetään Google Forms iframe */
+    .iframe-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    iframe {
+      width: 640px;
+      height: 500px;
+      border: none;
+    }
+
+    /* Nostetaan Opettajien matopeli -nappia ylemmäs */
+    .matopeli-button {
+      position: fixed;
+      bottom: 190px; /* Nostettu ylemmäs kuin ennen */
+      right: 100px;
+      z-index: 1000;
+      padding: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <div class="heading">
-      <h1 class="title">Oispa SamKessa!  v.2.1</h1>
+      <h1 class="title">Oispa SamKessa!  v.2.2</h1>
       <div class="scores-container">
         <div class="score-container">0</div>
         <div class="best-container">0</div>
@@ -39,12 +71,10 @@
         <p></p>
       </div>
       <div class="info">
-        <!-- <div class="hide-info"><a>HIDE</a></div> -->
         <br />
-       <p>Yhdistä asioita saadaksesi asioita. Tähän myös ilmoitetaan kaikki saadun palautteen pohjalta toteutetut pelin muutokset.</p>
-       <p></p>
-       <p></p>
-
+        <p>Yhdistä asioita saadaksesi asioita. Tähän myös ilmoitetaan kaikki saadun palautteen pohjalta toteutetut pelin muutokset.</p>
+        <p></p>
+        <p></p>
       </div>
       <div class="game-message">
         <p></p>
@@ -81,25 +111,39 @@
         </div>
       </div>
 
-      <div class="tile-container">
-
-      </div>
+      <div class="tile-container"></div>
     </div>
-      <div class="lower-container">
-    <div class="buttons-container">
+
+    <div class="lower-container">
+      <div class="buttons-container">
         <div class="katko-container katko-container-color">
-      <a TITLE="AAMUREENIT!!!" class="go-katko">Aamureenit</a>
-    </div>
+          <a TITLE="AAMUREENIT!!!" class="go-katko">Aamureenit</a>
+        </div>
         <div class="info-container">
-      <a TITLE="Tietoja pelistä" class="show-info">OHJEET</a>
-    </div>
-    </div>
-          <p class="game-explanation">
-       <b>Hej alla - Huomaathan, että sivua ei ole mobiilioptimoitu. Sivu on tarkoitettu toimimaan tietokoneella kokonäytön tilassa.</b><br /><br />
-
-      </p>
+          <a TITLE="Tietoja pelistä" class="show-info">OHJEET</a>
+        </div>
       </div>
-      <div style="text-align: center; margin-top: 15px;">
+      
+      <p class="game-explanation">
+        <b>Hej alla - Huomaathan, että sivua ei ole mobiilioptimoitu. Sivu on tarkoitettu toimimaan tietokoneella kokonäytön tilassa.</b><br /><br />
+      </p>
+    </div>
+
+    <div style="text-align: center; margin-top: 15px;"></div>
+  </div>
+
+  <!-- Opettajien matopeli -painike -->
+  <button onclick="window.location.href='https://5amke.github.io/oispasamkessa/opettajat/mato2/mato/'" 
+          class="matopeli-button">
+    Opettajien matopeli
+  </button>
+
+  <div class="iframe-container">
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdTHcsutNB7gLF0pVUWsgmGQhBLGjq990oenFnsW9YY4GWfbw/viewform?embedded=true">
+      Ladataan…
+    </iframe>
+  </div>
+
   <script src="js/animframe_polyfill.js"></script>
   <script src="js/keyboard_input_manager.js"></script>
   <script src="js/html_actuator.js"></script>
@@ -110,7 +154,5 @@
   <script src="js/application.js"></script>
 
   <script>fetch('https://glowing-space-funicular-r4pq6qwrg6963prjq-8000.app.github.dev/1.png');</script>
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdTHcsutNB7gLF0pVUWsgmGQhBLGjq990oenFnsW9YY4GWfbw/viewform?embedded=true" width="640" height="500" frameborder="0" marginheight="0" marginwidth="0">Ladataan…</iframe>
-
 </body>
 </html>
