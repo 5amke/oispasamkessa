@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aloitus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Muista sallia ponnahdusikkunat tällä sivustolla.</h1>
+<button id="startButton">Avaa peli</button>
+
+<script>
+    document.getElementById('startButton').addEventListener('click', function() {
+        const gameWindow = window.open(
+            'game.html',
+            '_blank',
+            'width=1000,height=1000,resizable=no,scrollbars=no'
+        );
+
+        if (!gameWindow) {
+            alert('Selaimesi estää ponnahdusikkunan avaamisen. Salli ponnahdusikkunat asetuksista ja yritä uudelleen.');
+        }
+    });
+</script>
+
+</body>
+</html>

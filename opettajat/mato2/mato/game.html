@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mato-pettäjät</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            background: url('br.png') no-repeat center center fixed;
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        canvas {
+            border: 2px solid #333;
+            display: block;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+    </style>
+    <script>
+        // Estetään ikkunan koon muuttaminen ja asetetaan sopiva koko
+        window.onload = function() {
+            const width = 1050;  // Aseta sopiva leveys
+            const height = 1000; // Aseta sopiva korkeus
+            window.resizeTo(width, height);
+            window.moveTo((screen.width - width) / 2, (screen.height - height) / 2);
+        };
+    </script>
+</head>
+<body>
+
+<div id="score">0/250</div>
+<canvas id="gameCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreDisplay = document.getElementById('score');
+
+    const gridSize = 20;
+    const targetScore = 250;
+
+    canvas.width = Math.floor((window.innerWidth - 20) / gridSize) * gridSize;
+    canvas.height = Math.floor((window.innerHeight - 20) / gridSize) * gridSize;
+
+    let snake = [{ x: gridSize * 5, y: gridSize * 5 }];
+    let direction = { x: gridSize, y: 0 };
+    let nextDirection = { x: gridSize, y: 0 };
+    let food = randomFoodPosition();
+    let score = 0;
+    let isEating = false;
+    let headSize = gridSize;
+    let targetSize = gridSize * 7.5;
+    let sizeChangeRate = 8;
+
+    const snakeHeadImage = new Image();
+    snakeHeadImage.src = getRandomImage(); // Alussa arvotaan kuva
+
+    document.addEventListener('keydown', changeDirection);
+
+    function gameLoop() {
+        direction = nextDirection;
+        moveSnake();
+
+        if (checkSelfCollision()) {
+            alert("Peli päättyi! Hävisit!");
+            resetGame();
+            return;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Piirrä ruoka
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(food.x + gridSize / 2, food.y + gridSize / 2, gridSize / 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Piirrä käärme
+        for (let i = 0; i < snake.length; i++) {
+            ctx.fillStyle = i === 0 ? 'transparent' : 'green';
+            ctx.beginPath();
+            ctx.roundRect(snake[i].x, snake[i].y, gridSize, gridSize, gridSize / 4);
+            ctx.fill();
+        }
+
+        drawSnakeHead(snake[0].x, snake[0].y);
+
+        if (snake[0].x === food.x && snake[0].y === food.y) {
+            score++;
+            scoreDisplay.innerText = `${score}/${targetScore}`;
+            snake.push({ ...snake[snake.length - 1] });
+            food = randomFoodPosition();
+
+            if (score >= targetScore) {
+                alert("Onnittelut! Voitit pelin syömällä 250 marjaa!");
+                resetGame();
+                return;
+            }
+
+            isEating = true;
+            headSize = gridSize;
+            targetSize = gridSize * 7.5;
+            animateGrowth();
+            setTimeout(animateShrink, 500);
+
+            if (score % 10 === 0) {
+                snakeHeadImage.src = getRandomImage();
+            }
+        }
+
+        setTimeout(gameLoop, 100);
+    }
+
+    function getRandomImage() {
+        const images = ['2.png', '4.png', '8.png', '16.png', '32.png', '64.png', '128.png', '512.png', '1024.png', '2048.png', '4096.png'];
+        return images[Math.floor(Math.random() * images.length)];
+    }
+
+    function animateGrowth() {
+        const interval = setInterval(() => {
+            if (headSize < targetSize) {
+                headSize += sizeChangeRate;
+            } else {
+                clearInterval(interval);
+                isEating = false;
+            }
+        }, 16);
+    }
+
+    function animateShrink() {
+        const interval = setInterval(() => {
+            if (headSize > gridSize) {
+                headSize -= sizeChangeRate;
+            } else {
+                clearInterval(interval);
+                headSize = gridSize;
+            }
+        }, 16);
+    }
+
+    function moveSnake() {
+        const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+        head.x = (head.x + canvas.width) % canvas.width;
+        head.y = (head.y + canvas.height) % canvas.height;
+        snake.unshift(head);
+        snake.pop();
+    }
+
+    function changeDirection(event) {
+        event.preventDefault();
+
+        const keyPressed = event.key;
+
+        if (keyPressed === 'ArrowUp' && direction.y === 0) {
+            nextDirection = { x: 0, y: -gridSize };
+        } else if (keyPressed === 'ArrowDown' && direction.y === 0) {
+            nextDirection = { x: 0, y: gridSize };
+        } else if (keyPressed === 'ArrowLeft' && direction.x === 0) {
+            nextDirection = { x: -gridSize, y: 0 };
+        } else if (keyPressed === 'ArrowRight' && direction.x === 0) {
+            nextDirection = { x: gridSize, y: 0 };
+        }
+    }
+
+    function randomFoodPosition() {
+        let newFoodPosition;
+        do {
+            newFoodPosition = {
+                x: Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize,
+                y: Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize
+            };
+        } while (isFoodOnSnake(newFoodPosition));
+        return newFoodPosition;
+    }
+
+    function isFoodOnSnake(position) {
+        return snake.some(segment => segment.x === position.x && segment.y === position.y);
+    }
+
+    function checkSelfCollision() {
+        const head = snake[0];
+        for (let i = 1; i < snake.length; i++) {
+            if (snake[i].x === head.x && snake[i].y === head.y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function resetGame() {
+        snake = [{ x: gridSize * 5, y: gridSize * 5 }];
+        direction = { x: gridSize, y: 0 };
+        nextDirection = { x: gridSize, y: 0 };
+        food = randomFoodPosition();
+        score = 0;
+        scoreDisplay.innerText = `0/${targetScore}`;
+        snakeHeadImage.src = getRandomImage();
+        gameLoop();
+    }
+
+    function drawSnakeHead(x, y) {
+        ctx.drawImage(snakeHeadImage, x - (headSize - gridSize) / 2, y - (headSize - gridSize) / 2, headSize, headSize);
+    }
+
+    snakeHeadImage.onload = gameLoop;
+</script>
+
+</body>
+</html>
