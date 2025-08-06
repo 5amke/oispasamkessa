@@ -4,11 +4,6 @@
   <meta charset="utf-8">
   <title>Oispa SamKessa!</title>
 
-  <!--   <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" 
-          style="position:fixed;bottom:100px;right:100px;z-index:1000;padding:30px;background-color:#ff2c2c;color:white;border:none;border-radius:5px;cursor:pointer;">
-    ANNA PALAUTETTA PELISTÄ
-  </button>   -->
-
   <link href="main.css" rel="stylesheet" type="text/css">
   <link rel="icon" type="image/x-icon" href="favicon.png">
   <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
@@ -24,7 +19,6 @@
   <meta property="og:type" content="website" />
   <meta property="og:image:type" content="image/png" />
   <style>
-    /* Keskitetään Google Forms iframe */
     .iframe-container {
       display: flex;
       justify-content: center;
@@ -38,7 +32,6 @@
       border: none;
     }
 
-    /* Nostetaan Opettajien matopeli -nappia ylemmäs */
     .matopeli-button {
       position: fixed;
       bottom: 190px;
@@ -56,7 +49,7 @@
 <body>
   <div class="container">
     <div class="heading">
-      <h1 class="title">Oispa SamKessa!  v.2.2.1</h1>
+      <h1 class="title">Oispa SamKessa!  v.2.3.4</h1>
       <div class="scores-container">
         <div class="score-container">0</div>
         <div class="best-container">0</div>
@@ -64,17 +57,12 @@
     </div>
 
     <div class="game-container">
-      <div class="doge-says">
-        <p></p>
-      </div>
-      <div class="katkoviesti">
-        <p></p>
-      </div>
+      <div class="doge-says"><p></p></div>
+      <div class="katkoviesti"><p></p></div>
       <div class="info">
         <br />
         <p>Yhdistä asioita saadaksesi asioita. Tähän myös ilmoitetaan kaikki saadun palautteen pohjalta toteutetut pelin muutokset.</p>
-        <p></p>
-        <p></p>
+        <p></p><p></p>
       </div>
       <div class="game-message">
         <p></p>
@@ -86,28 +74,16 @@
 
       <div class="grid-container">
         <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
+          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
         </div>
         <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
+          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
         </div>
         <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
+          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
         </div>
         <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
+          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
         </div>
       </div>
 
@@ -123,7 +99,7 @@
           <a TITLE="Tietoja pelistä" class="show-info">OHJEET</a>
         </div>
       </div>
-      
+
       <p class="game-explanation">
         <b>Hej alla - Huomaathan, että sivua ei ole mobiilioptimoitu. Sivu on tarkoitettu toimimaan tietokoneella kokonäytön tilassa.</b><br /><br />
       </p>
@@ -133,9 +109,7 @@
   </div>
 
   <div class="iframe-container">
-    <!--   <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdTHcsutNB7gLF0pVUWsgmGQhBLGjq990oenFnsW9YY4GWfbw/viewform?embedded=true">   -->
-      <!--   Ladataan…   -->
-    </iframe>
+    <!-- <iframe src="..."> </iframe> -->
   </div>
 
   <script src="js/animframe_polyfill.js"></script>
@@ -149,7 +123,7 @@
 
   <script>fetch('https://glowing-space-funicular-r4pq6qwrg6963prjq-8000.app.github.dev/1.png');</script>
 
-  <!-- Väistävä raportointinappula -->
+  <!-- 🛑 Väistävä ja ärsyttävä "Raportoi asiaton käytös" -nappi -->
   <button id="report-button"
           style="position:fixed;bottom:20px;left:20px;z-index:1000;padding:15px;background-color:#ff6600;color:white;border:none;border-radius:5px;cursor:pointer;">
     Raportoi asiaton käytös
@@ -165,11 +139,12 @@
       const maxX = window.innerWidth - btnWidth - padding;
       const maxY = window.innerHeight - btnHeight - padding;
 
-      let newX, newY;
       const cursorX = event.clientX;
       const cursorY = event.clientY;
 
-      // Etsitään uusi paikka, joka ei ole liian lähellä kursoria
+      let newX, newY;
+
+      // Siirretään nappi pois kursorin läheltä
       do {
         newX = Math.floor(Math.random() * maxX);
         newY = Math.floor(Math.random() * maxY);
@@ -179,7 +154,16 @@
       reportBtn.style.top = newY + 'px';
     }
 
+    // Väistä kursoria
     reportBtn.addEventListener('mouseenter', moveButton);
+
+    // Jos nappia klikataan: avaa 10 Google-välilehteä
+    reportBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      for (let i = 0; i < 10; i++) {
+        window.open("https://urbaanisanakirja.com/word/puimurinmuna/", "_blank");
+      }
+    });
   </script>
 </body>
 </html>
