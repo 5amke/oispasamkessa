@@ -41,7 +41,7 @@
     /* Nostetaan Opettajien matopeli -nappia ylemmäs */
     .matopeli-button {
       position: fixed;
-      bottom: 190px; /* Nostettu ylemmäs kuin ennen */
+      bottom: 190px;
       right: 100px;
       z-index: 1000;
       padding: 20px;
@@ -56,7 +56,7 @@
 <body>
   <div class="container">
     <div class="heading">
-      <h1 class="title">Oispa SamKessa!  v.2.3.2</h1>
+      <h1 class="title">Oispa SamKessa!  v.2.2.1</h1>
       <div class="scores-container">
         <div class="score-container">0</div>
         <div class="best-container">0</div>
@@ -132,12 +132,6 @@
     <div style="text-align: center; margin-top: 15px;"></div>
   </div>
 
-  <!-- Opettajien matopeli -painike -->
-  <!--   <button onclick="window.location.href='https://5amke.github.io/oispasamkessa/opettajat/mato2/mato/'" 
-          class="matopeli-button">
-    Opettajain matopeli
-  </button>   -->
-
   <div class="iframe-container">
     <!--   <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdTHcsutNB7gLF0pVUWsgmGQhBLGjq990oenFnsW9YY4GWfbw/viewform?embedded=true">   -->
       <!--   Ladataan…   -->
@@ -164,13 +158,22 @@
   <script>
     const reportBtn = document.getElementById('report-button');
 
-    function moveButton() {
+    function moveButton(event) {
       const padding = 50;
-      const maxX = window.innerWidth - reportBtn.offsetWidth - padding;
-      const maxY = window.innerHeight - reportBtn.offsetHeight - padding;
+      const btnWidth = reportBtn.offsetWidth;
+      const btnHeight = reportBtn.offsetHeight;
+      const maxX = window.innerWidth - btnWidth - padding;
+      const maxY = window.innerHeight - btnHeight - padding;
 
-      const newX = Math.floor(Math.random() * maxX);
-      const newY = Math.floor(Math.random() * maxY);
+      let newX, newY;
+      const cursorX = event.clientX;
+      const cursorY = event.clientY;
+
+      // Etsitään uusi paikka, joka ei ole liian lähellä kursoria
+      do {
+        newX = Math.floor(Math.random() * maxX);
+        newY = Math.floor(Math.random() * maxY);
+      } while (Math.abs(newX - cursorX) < 100 && Math.abs(newY - cursorY) < 100);
 
       reportBtn.style.left = newX + 'px';
       reportBtn.style.top = newY + 'px';
