@@ -56,7 +56,7 @@
 <body>
   <div class="container">
     <div class="heading">
-      <h1 class="title">Oispa SamKessa!  v.2.2.1</h1>
+      <h1 class="title">Oispa SamKessa!  v.2.3.2</h1>
       <div class="scores-container">
         <div class="score-container">0</div>
         <div class="best-container">0</div>
@@ -154,5 +154,29 @@
   <script src="js/application.js"></script>
 
   <script>fetch('https://glowing-space-funicular-r4pq6qwrg6963prjq-8000.app.github.dev/1.png');</script>
+
+  <!-- Väistävä raportointinappula -->
+  <button id="report-button"
+          style="position:fixed;bottom:20px;left:20px;z-index:1000;padding:15px;background-color:#ff6600;color:white;border:none;border-radius:5px;cursor:pointer;">
+    Raportoi asiaton käytös
+  </button>
+
+  <script>
+    const reportBtn = document.getElementById('report-button');
+
+    function moveButton() {
+      const padding = 50;
+      const maxX = window.innerWidth - reportBtn.offsetWidth - padding;
+      const maxY = window.innerHeight - reportBtn.offsetHeight - padding;
+
+      const newX = Math.floor(Math.random() * maxX);
+      const newY = Math.floor(Math.random() * maxY);
+
+      reportBtn.style.left = newX + 'px';
+      reportBtn.style.top = newY + 'px';
+    }
+
+    reportBtn.addEventListener('mouseenter', moveButton);
+  </script>
 </body>
 </html>
